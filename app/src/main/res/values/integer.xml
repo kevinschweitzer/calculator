@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="numeric_weight_sum">4</integer>
+    <integer name="numeric_button_weigth">1</integer>
+
+</resources>

@@ -20,14 +20,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class CalculatorView {
+public class CalculatorView extends ActivityView {
 
     @BindView(R.id.text_operation) TextView operation;
     @BindView(R.id.text_result) TextView result;
-    private Activity activity;
 
     public CalculatorView(Activity activity){
-        this.activity = activity;
+        super(activity);
         ButterKnife.bind(this, activity);
     }
 
@@ -91,7 +90,4 @@ public class CalculatorView {
         RxBus.post(new ClearObserver.Clear());
     }
 
-    public Activity getActivity(){
-        return activity;
-    }
 }

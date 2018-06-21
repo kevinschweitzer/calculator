@@ -1,5 +1,6 @@
 package com.example.kevinschweitzer.myapplication.mvp.model;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.kevinschweitzer.myapplication.util.operators.Operator;
@@ -10,17 +11,18 @@ public class CalculatorModel {
     private String number2;
     private Operator operator;
 
-    public CalculatorModel() {
-        number1 = "";
-        number2 = "";
-    }
-
     public void setNewNumber(String str){
         if(operator == null){
-            number1+=str;
+            if(number1==null)
+                number1=str;
+            else
+                number1+=str;
         }
         else{
-            number2+=str;
+            if(number2==null)
+                number2=str;
+            else
+                number2+=str;
         }
     }
 
@@ -29,10 +31,9 @@ public class CalculatorModel {
     }
 
     public Integer getResult(){
-        if(number1 != "" && number2 != ""){
+        if( !TextUtils.isEmpty(number1) && !TextUtils.isEmpty(number2)){
             int num1 = Integer.parseInt(number1);
             int num2 = Integer.parseInt(number2);
-            Log.i("Numero",num2+"");
             return operator.operate(num1,num2);
         }
 

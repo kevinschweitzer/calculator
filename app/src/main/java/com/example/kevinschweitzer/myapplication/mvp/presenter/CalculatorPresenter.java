@@ -48,11 +48,13 @@ public class CalculatorPresenter {
      */
     public void onEqualsClicked(){
         Integer result = model.getResult();
-        Log.d("RESULT",result+"");
         if(result!=null){
             view.setResult(result);
         }else{
-            view.setResult(view.getActivity().getResources().getString(R.string.error));
+            if(view.getActivity()==null)
+                return;
+            else
+                view.setResult(view.getActivity().getResources().getString(R.string.error));
         }
     }
 
