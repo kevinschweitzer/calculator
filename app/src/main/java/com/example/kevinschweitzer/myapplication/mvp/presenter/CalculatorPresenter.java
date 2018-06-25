@@ -46,16 +46,13 @@ public class CalculatorPresenter {
      * Resolve the calculation
      * If the equals symbol is clicked, this action must be done
      */
-    public void onEqualsClicked(){
-        Integer result = model.getResult();
-        if(result!=null){
-            view.setResult(result);
-        }else{
-            if(view.getActivity()==null)
-                return;
-            else
-                view.setResult(view.getActivity().getResources().getString(R.string.error));
+    public void onEqualsClicked() {
+        Activity activity = view.getActivity();
+        if (activity == null){
+            return;
         }
+        String result = model.getStringResult();
+        view.setResult(result!=null?result:activity.getResources().getString(R.string.error));
     }
 
     /**

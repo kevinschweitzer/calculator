@@ -38,12 +38,8 @@ public class CalculatorView extends ActivityView {
         operation.setText(operation.getText() + " " + str + " ");
     }
 
-    public void setResult(Integer result){
-        this.result.setText(result+"");
-    }
-
-    public void setResult(String error){
-        this.result.setText(error);
+    public void setResult(String value){
+        this.result.setText(value);
     }
 
     public void clear(){

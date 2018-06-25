@@ -40,6 +40,11 @@ public class CalculatorModel {
         return null;
     }
 
+    public String getStringResult(){
+        Integer result = getResult();
+        return result!=null?String.valueOf(result):null;
+    }
+
     public void clear(){
         number1="";
         number2="";
