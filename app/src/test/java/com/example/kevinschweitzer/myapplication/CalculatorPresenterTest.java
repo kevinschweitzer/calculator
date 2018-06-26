@@ -133,8 +133,10 @@ public class CalculatorPresenterTest {
     }
 
     @Test
+    @PrepareForTest(RxBus.class)
     public void registerWithNotNullActivityTest(){
         /*With not null activity*/
+        PowerMockito.mockStatic(RxBus.class);
         Activity activity = mock(Activity.class);
         Mockito.when(view.getActivity()).thenReturn(activity);
         presenter.register();
