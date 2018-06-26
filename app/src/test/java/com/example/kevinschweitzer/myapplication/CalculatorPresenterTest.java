@@ -56,6 +56,8 @@ public class CalculatorPresenterTest {
     private final int TWO_INVOCATIONS = 2;
     private @Mock CalculatorModel model;
     private @Mock CalculatorView view;
+    private @Mock Operator operator;
+    private @Mock Activity activityRegister;
     private @Captor ArgumentCaptor<NumberObserver> numberObserverArgumentCaptor;
     private @Captor ArgumentCaptor<OperatorObserver> operatorObserverArgumentCaptor;
     private @Captor ArgumentCaptor<EqualsObserver> equalsObserverArgumentCaptor;
@@ -74,31 +76,29 @@ public class CalculatorPresenterTest {
 
         verify(model).setNewNumber(NEW_NUMBER);
         verify(view).concatNumber(NEW_NUMBER);
-        verifyNoMoreInteractions(model,view);
     }
 
     @Test
     public void operatorClickedTest(){
-        Operator operator = Mockito.mock(Operator.class);
         Mockito.when(operator.getSymbol()).thenReturn(SYMBOL);
 
         presenter.onOperatorClicked(operator);
         verify(model).setOperator(operator);
         verify(view).concatOperator(operator.getSymbol());
-        verifyNoMoreInteractions(model,view);
     }
 
     @Test
-    public void equalsClickedTest(){
+    public void equalsClickedWithNullActivityTest(){
         /*With Activity null*/
         Mockito.when(view.getActivity()).thenReturn(null);
 
         presenter.onEqualsClicked();
-        verify(view).getActivity();
         verify(view,times(NO_INVOCATIONS)).setResult(anyString());
         verify(model,times(NO_INVOCATIONS)).getResult();
-        Mockito.verifyNoMoreInteractions(view,model);
+    }
 
+    @Test
+    public void equalsClickedWithNotNullActivityTest(){
         /*With activity not null*/
         Mockito.when(model.getStringResult()).thenReturn(SAMPLE_RESULT);
         Activity activity = Mockito.mock(Activity.class);
@@ -106,11 +106,9 @@ public class CalculatorPresenterTest {
 
         presenter.onEqualsClicked();
 
-        verify(view,times(TWO_INVOCATIONS)).getActivity();
         verify(view).setResult(model.getStringResult());
         verify(model,times(TWO_INVOCATIONS)).getStringResult();
 
-        verifyNoMoreInteractions(model,view);
     }
 
     @Test
@@ -124,7 +122,7 @@ public class CalculatorPresenterTest {
 
     @Test
     @PrepareForTest(RxBus.class)
-    public void registerTest(){
+    public void registerWithNullActivityTest(){
         PowerMockito.mockStatic(RxBus.class);
 
         /*With null activity*/
@@ -132,7 +130,10 @@ public class CalculatorPresenterTest {
         presenter.register();
         verifyStatic(times(NO_INVOCATIONS));
         RxBus.subscribe(any(Activity.class),any(BusObserver.class));
+    }
 
+    @Test
+    public void registerWithNotNullActivityTest(){
         /*With not null activity*/
         Activity activity = mock(Activity.class);
         Mockito.when(view.getActivity()).thenReturn(activity);
@@ -149,12 +150,11 @@ public class CalculatorPresenterTest {
 
         verifyStatic();
         RxBus.subscribe(eq(activity),any(ClearObserver.class));
-
     }
 
     @Test
     @PrepareForTest(RxBus.class)
-    public void unregisterTest(){
+    public void unregisterWithNullActivityTest(){
         PowerMockito.mockStatic(RxBus.class);
 
         /*With null activity*/
@@ -162,7 +162,11 @@ public class CalculatorPresenterTest {
         presenter.unregister();
         verifyStatic(times(NO_INVOCATIONS));
         RxBus.clear(any(Activity.class));
+    }
 
+    @Test
+    @PrepareForTest(RxBus.class)
+    public void unregisterWithNotNullActivityTest(){
         /*With not null activity*/
         Activity activity = mock(Activity.class);
         Mockito.when(view.getActivity()).thenReturn(activity);
@@ -170,6 +174,5 @@ public class CalculatorPresenterTest {
         verifyStatic();
         RxBus.clear(activity);
     }
-
 
 }
