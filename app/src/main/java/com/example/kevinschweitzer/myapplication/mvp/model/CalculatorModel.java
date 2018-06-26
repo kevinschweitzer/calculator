@@ -13,16 +13,10 @@ public class CalculatorModel {
 
     public void setNewNumber(String str){
         if(operator == null){
-            if(number1==null)
-                number1=str;
-            else
-                number1+=str;
+            number1 = number1==null?str:number1+str;
         }
         else{
-            if(number2==null)
-                number2=str;
-            else
-                number2+=str;
+            number2 = number2==null?str:number2+str;
         }
     }
 
